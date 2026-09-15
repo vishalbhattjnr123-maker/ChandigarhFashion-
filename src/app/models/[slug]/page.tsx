@@ -17,9 +17,10 @@ const modelDetails = {
 export default function ModelProfile({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = use(params);
     const model = models.find(m => m.slug === resolvedParams.slug);
-    const details = modelDetails[resolvedParams.slug as keyof typeof modelDetails];
+    const defaultDetails = { bio: `${model?.name} is a versatile talent with extensive editorial and runway experience.`, ht: model?.ht || "5'9\"", b: model?.b || "34", w: model?.w || "24", h: model?.h || "35", s: "9", hair: model?.hair || "Dark", eye: model?.eye || "Brown", port: [model?.img || '', '/images/30492.webp', '/images/34420.webp'] };
+    const details = modelDetails[resolvedParams.slug as keyof typeof modelDetails] || defaultDetails;
 
-    if (!model || !details) return notFound();
+    if (!model) return notFound();
 
     const handleBooking = () => {
         const text = encodeURIComponent(`Hello Chandigarh Fashion, I would like to enquire about booking ${model.name}. Please share availability and details.`);
@@ -41,7 +42,7 @@ export default function ModelProfile({ params }: { params: Promise<{ slug: strin
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
                         <h1 className="font-editorial text-5xl md:text-6xl mb-3">{model.name}</h1>
                         <div className="flex gap-3 mb-6 text-[10px] tracking-widest uppercase text-text-muted">
-                            <span>{model.cat}</span> • <span>{model.loc}</span>
+                            <span>{model.gender}</span> • <span>{model.loc}</span>
                         </div>
 
                         <p className="text-text-secondary text-sm leading-relaxed mb-10 max-w-md">
